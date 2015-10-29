@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>SDN Active Route Manager</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="../../../inc/inmsf/main.css" type="text/css">
+  <link rel="stylesheet" href="../../../inc/jquery-ui/jquery-ui.structure.min.css" type="text/css">
+  <link rel="stylesheet" href="../../../inc/jquery-ui/jquery-ui.theme.css" type="text/css">
+  <link rel="stylesheet" href="../../../inc/stripchart.css" type="text/css">
+  <link rel="stylesheet" href="css/app.css" type="text/css">
+  <script type="text/javascript" src="../../../inc/jquery.min.js"></script>
+  <script type="text/javascript" src="../../../inc/jquery-ui/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="../../../inc//jquery.stripchart.js"></script>
+  <script type="text/javascript" src="../../../inc/stripchart.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+</head>
+<body>
+  <div id="titleBar"><div id="product"><span id="logo"></span>SDN Active Route Manager</div></div>
+  <div id="tabs">
+    <span id="clone">
+       <button id="clone_button">New Window</button>
+    </span>
+    <ul>
+      <li><a href="#overall">Traffic</a></li>
+      <li><a href="#cache">Active Prefixes</a></li>
+      <li><a href="#resources">Resources</a></li>
+      <li><a href="#help">Help</a></li>
+    </ul>
+    <div id="overall">
+      <div id="overall-acc">
+	<div>
+	  <h3>Destinations</h3>
+	  <div>
+            <div id="toppaths" class="trend"></div>
+            <div id="topasns" class="trend"></div>
+            <div id="toppeers" class="trend"></div>
+	  </div>
+	</div>
+        <div>
+          <h3>Sources</h3>
+          <div>
+             <div id="topsrcasns" class="trend"></div>
+          </div> 
+        </div>
+      </div>
+    </div>
+    <div id="cache">
+      <div id="cache-acc">
+	<div>
+	  <h3>RIB</h3>
+	  <div>
+            <div id="prefixes" class="trend"></div>
+            <div id="prefixchanges" class="trend"></div>
+	  </div>
+	</div>
+	<div>
+	  <h3>Active</h3>
+	  <div>
+	    <div id="activeprefixes" class="trend"></div>
+            <div id="activecoverage" class="trend"></div>
+	  </div>
+	</div>
+	<div>
+	  <h3>Cache</h3>
+	  <div>
+            <div id="cachedprefixes" class="trend"></div>
+            <div id="cachedprefixchanges" class="trend"></div>
+	    <div id="cachedhitrate" class="trend"></div>
+	  </div>
+	</div>
+      </div>
+    </div>    
+    <div id="resources">
+      <div id="resources-acc">
+	<div>
+	  <h3>Switch</h3>
+	  <div>
+            <div id="cpu" class="trend"></div>
+            <div id="acl" class="trend"></div>
+            <div id="fwd" class="trend" style="height:170px"></div>
+	  </div>
+	</div>
+	<div>
+	  <h3>Router</h3>
+	  <div>
+	    <div id="routercpu" class="trend"></div>
+	  </div>
+	</div>
+      </div>
+    </div>
+    <div id="help">
+      <div id="help-acc">
+        <div>
+          <h3>About</h3>
+          <div>
+            <p><em>SDN Active Route Manager</em> monitors prefixes using BGP and traffic with sFlow. Active prefixes can be pushed to commodity switch hardware to create a high performance route cache.</p>
+          </div>
+        </div>
+	<div>
+	  <h3>Configuration</h3>
+	  <div>
+	    <p>Edit the following startup settings and restart sFlow-RT.</p>
+	    <table class="stripe">
+	      <thead><tr><th>Parameter</th><th>Default</th><th>Description</th></tr></thead>
+	      <tbody>
+		<tr class="even"><td>bgp.start</td><td>yes</td><td>Starts BGP listener</tr>
+		<tr class="odd"><td>bgp.port</td><td>179</td><td>TCP port used to listen for BGP connections</td></tr>
+		<tr class="even"><td>arm.reflector.ip</td><td>127.0.0.1</td><td>IP address of route reflector</td></tr>
+		<tr class="odd"><td>arm.reflector.as</td><td>65000</td><td>AS number of route reflector</td></tr>
+		<tr class="even"><td>arm.target.ip</td><td></td><td>Target router for top prefixes</td></tr>
+                <tr class="odd"><td>arm.target.as</td><td></td><td>AS number for target router</td></tr>
+		<tr class="even"><td>arm.target.prefixes</td><td>20000</td><td>Number of prefixes to push to target</td></tr>
+		<tr class="odd"><td>arm.target.minvalue</td><td>0</td><td>Traffic threshold before pushing prefix</td></tr>
+		<tr class="even"><td>arm.sflow.ip</td><td></td><td>sFlow source for traffic data (default is arm.reflector.ip)</td></tr>
+		<tr class="odd"><td>arm.sflow.t</td><td>20</td><td>Traffic moving average duration in seconds</td></tr>
+	      </tbody>
+	    </table>
+	  </div>
+	</div>
+      </div>
+    </div>
+  </div>
+  <div id="copyright">Copyright &copy; 2015 InMon Corp. ALL RIGHTS RESERVED</div>
+</body>
+</html>
