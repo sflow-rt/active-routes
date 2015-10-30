@@ -1,12 +1,13 @@
-Active Route Manager
+# Active Route Manager
 
 This code is based on the following example:
 
 http://blog.sflow.com/2015/07/white-box-internet-router-poc.html
 
-Copy files to the sFlow-RT app directory.
+## To install
 
-Restart sFlow-RT to load application.
+1. Copy files to the sFlow-RT app directory.
+2. Restart sFlow-RT to load application.
 
 Help is available within application web interface.
 
