@@ -12,18 +12,20 @@ var points;
 var SEP = '_SEP_';
 var flow_timeout = 2;
 
-var reflectorIP = getSystemProperty("arm.reflector.ip");
-var reflectorAS = getSystemProperty("arm.reflector.as");
+var reflectorIP = getSystemProperty("arm.reflector.ip") || "127.0.0.1";
+var reflectorAS = getSystemProperty("arm.reflector.as") || 65000;
+var reflectorID = getSystemProperty("arm.reflector.id");
 var targetIP = getSystemProperty("arm.target.ip");
 var targetAS = getSystemProperty("arm.target.as");
+var targetID = getSystemProperty("arm.target.id");
 var targetPrefixes = getSystemProperty("arm.target.prefixes") || 20000;
 var targetMinValue = getSystemProperty("arm.target.minvalue") || 0;
 var sFlowIP = getSystemProperty("arm.sflow.ip") || reflectorIP;
 var sFlowT = getSystemProperty("arm.sflow.t") || 10;
 
-if(reflectorIP && reflectorAS) bgpAddNeighbor(reflectorIP,reflectorAS);
+if(reflectorIP && reflectorAS) bgpAddNeighbor(reflectorIP,reflectorAS,reflectorID);
 if(sFlowIP && reflectorIP && sFlowT) bgpAddSource(sFlowIP,reflectorIP,sFlowT,'bytes');
-if(targetIP && targetAS) bgpAddNeighbor(targetIP,targetAS);
+if(targetIP && targetAS) bgpAddNeighbor(targetIP,targetAS,targetID);
 
 sharedSet('arm_config', {reflectorIP:reflectorIP, targetIP:targetIP, targetPrefixes:targetPrefixes, targetMinValue:targetMinValue});
 
