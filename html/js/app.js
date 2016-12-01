@@ -2,15 +2,7 @@ $(function() {
   var restPath =  '../scripts/active.js/';
   var dataURL = restPath + 'trend/json';        
 
-  var backgroundColor = '#ffffff';
   var SEP = '_SEP_';
-  var colors = [
-    '#3366cc','#dc3912','#ff9900','#109618','#990099','#0099c6','#dd4477',
-    '#66aa00','#b82e2e','#316395','#994499','#22aa99','#aaaa11','#6633cc',
-    '#e67300','#8b0707','#651067','#329262','#5574a6','#3b3eac','#b77322',
-    '#16d620','#b91383','#f4359e','#9c5935','#a9c413','#2a778d','#668d1c',
-    '#bea413','#0c5922','#743411'
-  ];
 
   var defaults = {
     tab:0,
@@ -19,6 +11,10 @@ $(function() {
     overall2:'hide',
     cache0:'show',
     cache1:'hide',
+    cache2:'hide',
+    cache60:'show',
+    cache61:'hide',
+    cache62:'hide',
     res0:'show',
     res1:'hide',
     hlp0:'hide',
@@ -95,6 +91,19 @@ $(function() {
       }
     });
   });
+
+  $('#cache6-acc > div').each(function(idx) {
+    $(this).accordion({
+      heightStyle:'content',
+      collapsible: true,
+      active: getState('cache6'+idx, 'hide') == 'show' ? 0 : false,
+      activate: function(event, ui) {
+        var newIndex = $(this).accordion('option','active');
+        setState('cache6'+idx, newIndex === 0 ? 'show' : 'hide', true);
+        $.event.trigger({type:'updateChart'});
+      }
+    });
+  });
   
   $('#resources-acc > div').each(function(idx) {
     $(this).accordion({
@@ -142,8 +151,6 @@ $(function() {
     stack:true,
     includeOther:false,
     legendHeadings: ['Dst. AS Path'],
-    colors: colors,
-    backgroundColor: backgroundColor,
     units: 'Bits per Second'},
   db);
   $('#topasns').chart({
@@ -152,8 +159,6 @@ $(function() {
     stack:true,
     includeOther:false,
     legendHeadings: ['Dst. AS'],
-    colors: colors,
-    backgroundColor: backgroundColor,
     units: 'Bits per Second'},
   db);
   $('#toppeers').chart({
@@ -162,8 +167,6 @@ $(function() {
     stack:true,
     includeOther:false,
     legendHeadings: ['Dst. Peer AS'],
-    colors: colors,
-    backgroundColor: backgroundColor,
     units: 'Bits per Second'},
   db);
   $('#topsrcasns').chart({
@@ -172,16 +175,14 @@ $(function() {
     stack:true,
     includeOther:false,
     legendHeadings: ['Src. AS'],
-    colors: colors,
-    backgroundColor: backgroundColor,
     units: 'Bits per Second'},
   db);
+
+  // IPv4 Prefixes
   $('#prefixes').chart({
     type: 'trend',
     metrics: ['bgp-nprefixes'],
     stack:false,
-    colors: colors,
-    backgroundColor: backgroundColor,
     units: 'Total Prefixes'},
   db);
   $('#prefixchanges').chart({
@@ -189,16 +190,12 @@ $(function() {
     metrics: ['bgp-adds','bgp-removes'],
     stack:false,
     legend:['Adds','Removes'],
-    colors: colors,
-    backgroundColor: backgroundColor,
     units: 'Prefixes per Second'},
   db);
   $('#cachedprefixes').chart({
     type: 'trend',
     metrics: ['cache-prefixes'],
     stack:false,
-    colors: colors,
-    backgroundColor: backgroundColor,
     units: 'Total Prefixes'},
   db);
   $('#cachedprefixchanges').chart({
@@ -206,8 +203,6 @@ $(function() {
     metrics: ['cache-prefixes-added','cache-prefixes-removed'],
     stack:false,
     legend:['Adds','Removes'],
-    colors: colors,
-    backgroundColor: backgroundColor,
     units: 'Prefixes per Second'},
   db);
   $('#cachedhitrate').chart({
@@ -215,8 +210,6 @@ $(function() {
     metrics: ['cache-missadd','cache-missdelete'],
     legend: ['New','Deleted'],
     stack:true,
-    colors: colors,
-    backgroundColor: backgroundColor,
     units: '%Cache Misses'},
   db);
   $('#activeprefixes').chart({
@@ -224,48 +217,86 @@ $(function() {
     metrics: ['active-activeprefixes','active-coveredprefixes'],
     legend: ['Active','Covered'],
     stack:true,
-    colors: colors,
-    backgroundColor: backgroundColor,
     units: 'Prefixes'},
   db);
   $('#activecoverage').chart({
     type: 'trend',
     metrics: ['active-coverage'],
     stack:false,
-    colors: colors,
-    backgroundColor: backgroundColor,
     units: '%Active Prefix Traffic'},
   db);
+
+  // IPv6 Prefixes
+  $('#prefixes6').chart({
+    type: 'trend',
+    metrics: ['bgp-nprefixes6'],
+    stack:false,
+    units: 'Total Prefixes'},
+  db);
+  $('#prefixchanges6').chart({
+    type: 'trend',
+    metrics: ['bgp-adds6','bgp-removes6'],
+    stack:false,
+    legend:['Adds','Removes'],
+    units: 'Prefixes per Second'},
+  db);
+  $('#cachedprefixes6').chart({
+    type: 'trend',
+    metrics: ['cache-prefixes6'],
+    stack:false,
+    units: 'Total Prefixes'},
+  db);
+  $('#cachedprefixchanges6').chart({
+    type: 'trend',
+    metrics: ['cache-prefixes-added6','cache-prefixes-removed6'],
+    stack:false,
+    legend:['Adds','Removes'],
+    units: 'Prefixes per Second'},
+  db);
+  $('#cachedhitrate6').chart({
+    type: 'trend',
+    metrics: ['cache-missadd6','cache-missdelete6'],
+    legend: ['New','Deleted'],
+    stack:true,
+    units: '%Cache Misses'},
+  db);
+  $('#activeprefixes6').chart({
+    type: 'trend',
+    metrics: ['active-activeprefixes6','active-coveredprefixes6'],
+    legend: ['Active','Covered'],
+    stack:true,
+    units: 'Prefixes'},
+  db);
+  $('#activecoverage6').chart({
+    type: 'trend',
+    metrics: ['active-coverage6'],
+    stack:false,
+    units: '%Active Prefix Traffic'},
+  db);
+
+  // Resources
   $('#cpu').chart({
     type: 'trend',
     legend: ['CPU Utilization','Load per Core','Memory Utilization','Disk Utilization','Disk Partition Utilization'],
     metrics:['cpu_util','load_per_cpu','mem_util','disk_util','part_max_util'],
-    colors:colors,
-    backgroundColor: backgroundColor,
     units: 'Percentage'},
   db);
   $('#fwd').chart({
     type: 'trend',
     legend: ['Host Table','MAC Table','IPv4 Table','IPv6 Table','IPv4/IPv6 Table','Long IPv6 Table','Total Routes','ECMP Nexthops Table'],
     metrics:['hw_host_util','hw_mac_util','hw_ipv4_util','hw_ipv6_util','hw_ipv4_ipv6_util','hw_ipv6_long_util','hw_total_routes_util','hw_ecmp_nexthops_util'],
-    colors:colors,
-    backgroundColor: backgroundColor,
     units: 'Percentage'},
   db);
   $('#acl').chart({
     type: 'trend',
     legend: ['ACL Ingress Table','ACL Ingress Meters Table','ACL Ingress Counters Table','ACL Egress Table','ACL Egress Meters Table','ACL Egress Counters Table'],
     metrics:['hw_acl_ingress_util','hw_acl_ingress_meters_util','hw_acl_ingress_counters_util','hw_acl_egress_util','hw_acl_egress_meters_util','hw_acl_egress_counters_util'],
-    colors:colors,
-    backgroundColor: backgroundColor,
     units: 'Percentage'},
   db);
   $('#routercpu').chart({
     type: 'trend',
     legend: ['CPU Utilization','Load per Core','Memory Utilization','Disk Utilization','Disk Partition Utilization'],
     metrics:['router_cpu_util','router_load_per_cpu','router_mem_util','router_disk_util','router_part_max_util'],
-    colors:colors,
-    backgroundColor: backgroundColor,
     units: 'Percentage'},
   db);
 

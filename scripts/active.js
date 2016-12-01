@@ -1,8 +1,8 @@
 // author: InMon Corp.
-// version: 0.1
-// date: 10/28/2015
+// version: 0.2
+// date: 12/1/2016
 // description: SDN Active Route Manager
-// copyright: Copyright (c) 2015 InMon Corp. ALL RIGHTS RESERVED
+// copyright: Copyright (c) 2015-2016 InMon Corp. ALL RIGHTS RESERVED
 
 include(scriptdir() + '/inc/trend.js');
 
@@ -13,21 +13,27 @@ var SEP = '_SEP_';
 var flow_timeout = 2;
 
 var reflectorIP = getSystemProperty("arm.reflector.ip") || "127.0.0.1";
+var reflectorIP6 = getSystemProperty("arm.reflector.ip6") || "::1";
 var reflectorAS = getSystemProperty("arm.reflector.as") || 65000;
 var reflectorID = getSystemProperty("arm.reflector.id");
 var targetIP = getSystemProperty("arm.target.ip");
+var targetIP6 = getSystemProperty("arm.target.ip6");
 var targetAS = getSystemProperty("arm.target.as");
 var targetID = getSystemProperty("arm.target.id");
 var targetPrefixes = getSystemProperty("arm.target.prefixes") || 20000;
+var targetPrefixes6 = getSystemProperty("arm.target.prefixes6") || 20000;
 var targetMinValue = getSystemProperty("arm.target.minvalue") || 0;
 var sFlowIP = getSystemProperty("arm.sflow.ip") || reflectorIP;
 var sFlowT = getSystemProperty("arm.sflow.t") || 10;
 
 if(reflectorIP && reflectorAS) bgpAddNeighbor(reflectorIP,reflectorAS,reflectorID);
-if(sFlowIP && reflectorIP && sFlowT) bgpAddSource(sFlowIP,reflectorIP,sFlowT,'bytes');
+if(reflectorIP6 && reflectorAS) bgpAddNeighbor(reflectorIP6,reflectorAS,reflectorID,{'ipv6':true});
+if(sFlowIP && reflectorIP && sFlowT) bgpAddSource(sFlowIP,{router:reflectorIP,router6:reflectorIP6},sFlowT,'bytes');
 if(targetIP && targetAS) bgpAddNeighbor(targetIP,targetAS,targetID);
+if(targetIP6 && targetAS) bgpAddNeighbor(targetIP6,targetAS,targetID,{'ipv6':true});
 
 sharedSet('arm_config', {reflectorIP:reflectorIP, targetIP:targetIP, targetPrefixes:targetPrefixes, targetMinValue:targetMinValue});
+sharedSet('arm_config6', {reflectorIP:reflectorIP6, targetIP:targetIP6, targetPrefixes:targetPrefixes6, targetMinValue:targetMinValue});
 
 setFlow('arm_bytes', {value:'bytes',n:10,t:flow_timeout,fs:SEP});
 setFlow('arm_dstaspath', {keys:'bgpdestinationaspath', value:'bytes', n:10, t:flow_timeout, fs:SEP});
@@ -156,6 +162,22 @@ setIntervalHandler(function() {
   points['active-coverage'] = stats['active-coverage'] || 0;
   points['active-coveredprefixes'] = stats['active-coveredprefixes'] || 0;
   points['active-activeprefixes'] = stats['active-prefixes'] - stats['active-coveredprefixes'];
+
+  stats = sharedGet('arm_stats6') || {};
+  points['bgp-nprefixes6'] = stats['bgp-nprefixes'] || 0;
+  points['bgp-adds6'] = stats['bgp-adds'] || 0;
+  points['bgp-removes6'] = stats['bgp-removes'] || 0;
+  points['cache-prefixes-added6'] = stats['cache-prefixes-added'] || 0;
+  points['cache-prefixes-removed6'] = stats['cache-prefixes-removed'] || 0;
+  points['cache-prefixes6'] = stats['cache-prefixes'] || 0;
+  points['cache-hitrate6'] = stats['cache-hitrate'] || 0;
+  points['cache-missrate6'] = stats['cache-missrate'] || 0;
+  points['cache-missdelete6'] = stats['cache-missrecent'] || 0;
+  points['cache-missadd6'] = points['cache-missrate'] - points['cache-missdelete'];
+  points['active-prefixes6'] = stats['active-prefixes'] || 0;
+  points['active-coverage6'] = stats['active-coverage'] || 0;
+  points['active-coveredprefixes6'] = stats['active-coveredprefixes'] || 0;
+  points['active-activeprefixes6'] = stats['active-prefixes'] - stats['active-coveredprefixes'];
 
   trend.addPoints(points);
 }, 1);

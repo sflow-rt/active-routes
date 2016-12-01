@@ -23,6 +23,7 @@
     <ul>
       <li><a href="#overall">Traffic</a></li>
       <li><a href="#cache">Active Prefixes</a></li>
+      <li><a href="#cache6">Active Prefixes (IPv6)</a></li>
       <li><a href="#resources">Resources</a></li>
       <li><a href="#help">Help</a></li>
     </ul>
@@ -69,7 +70,33 @@
             </div>
         </div>
       </div>
-    </div>    
+    </div> 
+    <div id="cache6">
+      <div id="cache6-acc">
+        <div>
+          <h3>RIB</h3>
+          <div>
+            <div id="prefixes6" class="trend"></div>
+            <div id="prefixchanges6" class="trend"></div>
+          </div>
+        </div>
+        <div>
+          <h3>Active</h3>
+          <div>
+            <div id="activeprefixes6" class="trend"></div>
+            <div id="activecoverage6" class="trend"></div>
+          </div>
+        </div>
+        <div>
+          <h3>Cache</h3>
+            <div>
+              <div id="cachedprefixes6" class="trend"></div>
+              <div id="cachedprefixchanges6" class="trend"></div>
+              <div id="cachedhitrate6" class="trend"></div>
+            </div>
+        </div>
+      </div>
+    </div>   
     <div id="resources">
       <div id="resources-acc">
         <div>
@@ -106,15 +133,18 @@
                 <tr class="even"><td>bgp.start</td><td>no</td><td>Starts BGP listener</tr>
                 <tr class="odd"><td>bgp.port</td><td>1179</td><td>TCP port used to listen for BGP connections</td></tr>
                 <tr class="even"><td>arm.reflector.ip</td><td>127.0.0.1</td><td>IP address of route reflector</td></tr>
-                <tr class="odd"><td>arm.reflector.as</td><td>65000</td><td>Local AS number to advertise to route reflector</td></tr>
-                <tr class="even"><td>arm.reflector.id</td><td></td><td>Local identifier (e.g. 0.0.0.1) to advertise to route reflector</td></tr>
-                <tr class="odd"><td>arm.target.ip</td><td></td><td>Target router for top prefixes</td></tr>
+                <tr class="odd"><td>arm.reflector.ip6</td><td>::1</td><td>IPv6 address of route reflector</td></tr>
+                <tr class="even"><td>arm.reflector.as</td><td>65000</td><td>Local AS number to advertise to route reflector</td></tr>
+                <tr class="odd"><td>arm.reflector.id</td><td></td><td>Local identifier (e.g. 0.0.0.1) to advertise to route reflector</td></tr>
+                <tr class="even"><td>arm.target.ip</td><td></td><td>Target router for top IP prefixes</td></tr>
+                <tr class="odd"><td>arm.target.ip6</td><td></td><td>Target router for top IPv6 prefixes</td></tr>
                 <tr class="even"><td>arm.target.as</td><td></td><td>Local AS number to advertise to target router</td></tr>
                 <tr class="odd"><td>arm.target.id</td><td></td><td>Local identifier (e.g. 0.0.0.2) to advertise to target router</td></tr>
-                <tr class="even"><td>arm.target.prefixes</td><td>20000</td><td>Number of prefixes to push to target router</td></tr>
-                <tr class="odd"><td>arm.target.minvalue</td><td>0</td><td>Traffic threshold before pushing prefix</td></tr>
-                <tr class="even"><td>arm.sflow.ip</td><td></td><td>sFlow source for traffic data (default is arm.reflector.ip)</td></tr>
-                <tr class="odd"><td>arm.sflow.t</td><td>20</td><td>Traffic moving average duration in seconds</td></tr>
+                <tr class="even"><td>arm.target.prefixes</td><td>20000</td><td>Number of IP prefixes to push to target router</td></tr>
+                <tr class="odd"><td>argm.target.prefixes6</td><td>20000</td><td>Mumber of IPv6 prefixes to push to target router</td></tr>
+                <tr class="even"><td>arm.target.minvalue</td><td>0</td><td>Traffic threshold before pushing prefix</td></tr>
+                <tr class="odd"><td>arm.sflow.ip</td><td></td><td>sFlow source for traffic data (default is arm.reflector.ip)</td></tr>
+                <tr class="even"><td>arm.sflow.t</td><td>20</td><td>Traffic moving average duration in seconds</td></tr>
               </tbody>
             </table>
           </div>
@@ -122,6 +152,6 @@
       </div>
     </div>
   </div>
-  <div id="copyright">Copyright &copy; 2015 InMon Corp. ALL RIGHTS RESERVED</div>
+  <div id="copyright">Copyright &copy; 2015-2016 InMon Corp. ALL RIGHTS RESERVED</div>
 </body>
 </html>
