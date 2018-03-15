@@ -102,9 +102,8 @@ var router_metric_list = [
   'max:part_max_used'
 ];
 
-setIntervalHandler(function() {
+setIntervalHandler(function(now) {
   points = {};
-  let now = (new Date()).getTime();
 
   res = metric(targetIP,switch_metric_list);
   points['discards'] = getMetric(res,0,0) + getMetric(res,1,0);
@@ -179,7 +178,7 @@ setIntervalHandler(function() {
   points['active-coveredprefixes6'] = stats['active-coveredprefixes'] || 0;
   points['active-activeprefixes6'] = stats['active-prefixes'] - stats['active-coveredprefixes'];
 
-  trend.addPoints(points);
+  trend.addPoints(now,points);
 }, 1);
 
 setHttpHandler(function(req) {

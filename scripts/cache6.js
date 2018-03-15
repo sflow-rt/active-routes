@@ -11,11 +11,10 @@ var bgpPrevRemoves = 0;
 var cachePrevAdds = 0;
 var cachePrevRemoves = 0;
 
-setIntervalHandler(function() {
+setIntervalHandler(function(now) {
   let config = sharedGet('arm_config6');
   if(!config || !config.reflectorIP) return;
 
-  let now = Date.now();
   let top = bgpTopPrefixes6(config.reflectorIP,config.targetPrefixes,config.targetMinValue,'egress',true,1,true);
   if(!top || !top.hasOwnProperty('topPrefixes')) return;
 
