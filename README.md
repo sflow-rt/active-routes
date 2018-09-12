@@ -2,16 +2,17 @@
 
 Optimize hardware forwarding by identifying most active routes:
 
-http://blog.sflow.com/2016/07/internet-router-using-merchant-silicon.html
+https://blog.sflow.com/2016/07/internet-router-using-merchant-silicon.html
 
-http://blog.sflow.com/2016/12/ipv6-internet-router-using-merchant.html
+https://blog.sflow.com/2016/12/ipv6-internet-router-using-merchant.html
 
 ## To install
 
-1. Copy files to the sFlow-RT app directory.
-2. Restart sFlow-RT to load application.
+1. Download sFlow-RT, https://sflow-rt.com/download.php
+1. Run command: sflow-rt/get-app.sh sflow-rt active-routes
+2. Restart sFlow-RT
 
 Help is available within application web interface.
 
 For more information, visit:
-http://www.sFlow-RT.com
+https://sflow-rt.com
