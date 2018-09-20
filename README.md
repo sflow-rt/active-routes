@@ -12,6 +12,9 @@ https://blog.sflow.com/2016/12/ipv6-internet-router-using-merchant.html
 2. Run command: `sflow-rt/get-app.sh sflow-rt active-routes`
 3. Restart sFlow-RT
 
+Alternatively, use the Docker image:
+https://hub.docker.com/r/sflow/active-routes/
+
 Help is available within application web interface.
 
 For more information, visit:
