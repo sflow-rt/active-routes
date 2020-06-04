@@ -43,7 +43,7 @@ setIntervalHandler(function(now) {
         else if(recentlyRemoved[entry.prefix]) missRecent += entry.value;
         if(entry.parentprefix) covered++;
         if(bgpAddRoute(config.targetIP,entry)) {
-          installed[entry.prefix] = now; 
+          installed[entry.prefix] = now;
         }
       }
       recentlyRemoved = {};
@@ -53,7 +53,7 @@ setIntervalHandler(function(now) {
         if(bgpRemoveRoute(config.targetIP,prefix)) {
           delete installed[prefix];
           recentlyRemoved[prefix] = now;
-        } 
+        }
       }
 
       stats['cache-prefixes-added'] = tgt.pushedPrefixesAdded - cachePrevAdds;
@@ -62,7 +62,7 @@ setIntervalHandler(function(now) {
       cachePrevRemoves = tgt.pushedPrefixesRemoved;
       stats['cache-prefixes'] = tgt.pushedPrefixesAdded - tgt.pushedPrefixesRemoved;
       stats['cache-hitrate'] = 100 * hit / Math.max(top.valueTotal,1);
-      stats['cache-missrecent'] = 100 * missRecent / Math.max(top.valueTotal,1);  
+      stats['cache-missrecent'] = 100 * missRecent / Math.max(top.valueTotal,1);
     } else {
       stats['cache-prefixes-added'] = 0;
       stats['cache-prefixes-removed'] = 0;
@@ -83,7 +83,7 @@ setIntervalHandler(function(now) {
       else if(recentlyRemoved[entry.prefix]) missRecent += entry.value;
       if(entry.parentprefix) covered++;
       if(!installed[entry.prefix]) added++;
-      installed[entry.prefix] = now; 
+      installed[entry.prefix] = now;
     }
     recentlyRemoved = {};
     for(let prefix in installed) {
